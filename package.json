@@ -1,0 +1,16 @@
+{
+    "name": "Halloween2017",
+    "version": "0.0.1",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "web d.va",
+    "contributors": [],
+    "dependencies": {
+        "phaser-ce": "^2.8.7"
+    }
+}
