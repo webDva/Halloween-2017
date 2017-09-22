@@ -36,10 +36,31 @@ module GameModuleName {
         preload() {
             // Display the loading screen image
             // Load assets
+
+            // test square graphic
+            let square = this.game.add.bitmapData(32, 32);
+            square.rect(0, 0, 32, 32, "rgb(255, 255, 255)");
+            this.game.cache.addBitmapData("square", square);
         }
 
         create() {
             this.game.state.start("GameState");
+        }
+    }
+
+    /*
+     * A falling, kawaii pixel art circle of a Halloween archetype.
+     */
+    export class KawaiiSprite extends Phaser.Sprite {
+        /*
+         * Not gonna pass the GameState so that this object can be self-contained or whatever. You can rely on
+         * Phaser.Group for adding onInputDown Signals and stuff.
+         */
+        constructor(game: Phaser.Game, x: number, y: number, key: Phaser.BitmapData) {
+            super(game, x, y, key);
+
+            game.physics.arcade.enable(this);
+            this.body.collideWorldBounds = true;
         }
     }
 
@@ -49,11 +70,19 @@ module GameModuleName {
     export class GameState extends Phaser.State {
         game: Phaser.Game;
 
+        kawaiiGroup: Phaser.Group;
+
         constructor() {
             super();
         }
 
         create() {
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
+            this.game.physics.arcade.gravity.y = 9.8;
+
+            this.kawaiiGroup = this.game.add.group();
+            let singleKawaii = new KawaiiSprite(this.game, 100, 100, this.game.cache.getBitmapData("square"));
+            this.kawaiiGroup.add(singleKawaii);
         }
 
         update() {
