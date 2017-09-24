@@ -61,7 +61,7 @@ module GameModuleName {
 
             this.game.physics.arcade.enable(this);
             this.body.collideWorldBounds = true;
-            
+
             // Add to the display, but the physics system already did this, so this is redundant.
             this.game.stage.addChild(this);
         }
@@ -81,14 +81,20 @@ module GameModuleName {
 
         create() {
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
-            this.game.physics.arcade.gravity.y = 9.8;
+            this.game.physics.arcade.gravity.y = 400;
 
             this.kawaiiGroup = this.game.add.group();
-            let singleKawaii = new KawaiiSprite(this.game, 100, 100, this.game.cache.getBitmapData("square"));
-            this.kawaiiGroup.add(singleKawaii);
+
+            let spawnTimer = this.game.time.create(false);
+            spawnTimer.loop(800, () => {
+                let singleKawaii = new KawaiiSprite(this.game, this.game.rnd.integerInRange(0, this.game.width - 32), 0, this.game.cache.getBitmapData('square'));
+                this.kawaiiGroup.add(singleKawaii);
+            }, this);
+            spawnTimer.start();
         }
 
         update() {
+            this.game.physics.arcade.collide(this.kawaiiGroup);
         }
     }
 
