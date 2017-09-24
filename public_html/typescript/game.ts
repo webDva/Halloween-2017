@@ -135,10 +135,12 @@ module GameModuleName {
 
             this.player.body.velocity.x = 0;
 
-            if (this.game.input.position.x < this.game.world.centerX) {
-                this.player.body.velocity.x = -100;
-            } else if (this.game.input.position.x > this.game.world.centerX) {
-                this.player.body.velocity.x = 100;
+            if (this.game.input.activePointer.isDown) {
+                if (this.game.input.position.x < this.game.world.centerX) {
+                    this.player.body.velocity.x = -300;
+                } else if (this.game.input.position.x > this.game.world.centerX) {
+                    this.player.body.velocity.x = 300;
+                }
             }
         }
     }
