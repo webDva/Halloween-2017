@@ -59,8 +59,11 @@ module GameModuleName {
         constructor(game: Phaser.Game, x: number, y: number, key: Phaser.BitmapData) {
             super(game, x, y, key);
 
-            game.physics.arcade.enable(this);
+            this.game.physics.arcade.enable(this);
             this.body.collideWorldBounds = true;
+            
+            // Add to the display, but the physics system already did this, so this is redundant.
+            this.game.stage.addChild(this);
         }
     }
 
