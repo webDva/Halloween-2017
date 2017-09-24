@@ -38,9 +38,18 @@ module GameModuleName {
             // Load assets
 
             // test square graphic
-            let square = this.game.add.bitmapData(32, 32);
-            square.rect(0, 0, 32, 32, "rgb(255, 255, 255)");
-            this.game.cache.addBitmapData("square", square);
+            let pumpkinSquare = this.game.add.bitmapData(32, 32);
+            let nekoSquare = this.game.add.bitmapData(32, 32);
+            let majoSquare = this.game.add.bitmapData(32, 32);
+
+            pumpkinSquare.rect(0, 0, 32, 32, "rgb(255, 165, 0)");
+            this.game.cache.addBitmapData("pumpkin", pumpkinSquare);
+
+            nekoSquare.rect(0, 0, 32, 32, 'rgb(0, 0, 0)');
+            this.game.cache.addBitmapData('neko', nekoSquare);
+
+            majoSquare.rect(0, 0, 32, 32, 'rgb(128, 128, 128)');
+            this.game.cache.addBitmapData('majo', majoSquare);
         }
 
         create() {
@@ -48,19 +57,36 @@ module GameModuleName {
         }
     }
 
+    export enum HalloweenArchetype {
+        Pumpkin,
+        Majo,
+        Neko
+    }
+
     /*
      * A falling, kawaii pixel art circle of a Halloween archetype.
      */
     export class KawaiiSprite extends Phaser.Sprite {
+        halloweenArchetype: HalloweenArchetype;
+
         /*
          * Not gonna pass the GameState so that this object can be self-contained or whatever. You can rely on
          * Phaser.Group for adding onInputDown Signals and stuff.
          */
-        constructor(game: Phaser.Game, x: number, y: number, key: Phaser.BitmapData) {
+        constructor(game: Phaser.Game, x: number, y: number, key: string) {
             super(game, x, y, key);
 
             this.game.physics.arcade.enable(this);
             this.body.collideWorldBounds = true;
+
+            let randomType = this.game.rnd.integerInRange(0, 2);
+            if (randomType === 0) {
+                this.loadTexture(this.game.cache.getBitmapData('pumpkin'));
+            } else if (randomType === 1) {
+                this.loadTexture(this.game.cache.getBitmapData('majo'));
+            } else if (randomType === 2) {
+                this.loadTexture(this.game.cache.getBitmapData('neko'));
+            }
 
             // Add to the display, but the physics system already did this, so this is redundant.
             this.game.stage.addChild(this);
@@ -87,7 +113,7 @@ module GameModuleName {
 
             let spawnTimer = this.game.time.create(false);
             spawnTimer.loop(800, () => {
-                let singleKawaii = new KawaiiSprite(this.game, this.game.rnd.integerInRange(0, this.game.width - 32), 0, this.game.cache.getBitmapData('square'));
+                let singleKawaii = new KawaiiSprite(this.game, this.game.rnd.integerInRange(0, this.game.width - 32), 0, '__default');
                 this.kawaiiGroup.add(singleKawaii);
             }, this);
             spawnTimer.start();
