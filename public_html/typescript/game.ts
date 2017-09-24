@@ -41,6 +41,7 @@ module GameModuleName {
             let pumpkinSquare = this.game.add.bitmapData(32, 32);
             let nekoSquare = this.game.add.bitmapData(32, 32);
             let majoSquare = this.game.add.bitmapData(32, 32);
+            let playerSquare = this.game.add.bitmapData(100, 100);
 
             pumpkinSquare.rect(0, 0, 32, 32, "rgb(255, 165, 0)");
             this.game.cache.addBitmapData("pumpkin", pumpkinSquare);
@@ -50,6 +51,9 @@ module GameModuleName {
 
             majoSquare.rect(0, 0, 32, 32, 'rgb(128, 128, 128)');
             this.game.cache.addBitmapData('majo', majoSquare);
+
+            playerSquare.rect(0, 0, 100, 100, 'rgb(255, 192, 203)');
+            this.game.cache.addBitmapData('player', playerSquare);
         }
 
         create() {
@@ -77,7 +81,8 @@ module GameModuleName {
             super(game, x, y, key);
 
             this.game.physics.arcade.enable(this);
-            this.body.collideWorldBounds = true;
+            this.checkWorldBounds = true;
+            this.outOfBoundsKill = true;
 
             let randomType = this.game.rnd.integerInRange(0, 2);
             if (randomType === 0) {
@@ -100,6 +105,7 @@ module GameModuleName {
         game: Phaser.Game;
 
         kawaiiGroup: Phaser.Group;
+        player: Phaser.Sprite;
 
         constructor() {
             super();
@@ -117,10 +123,23 @@ module GameModuleName {
                 this.kawaiiGroup.add(singleKawaii);
             }, this);
             spawnTimer.start();
+
+            this.player = this.game.add.sprite(this.game.world.centerX, this.game.height - 150, this.game.cache.getBitmapData('player'));
+            this.game.physics.arcade.enable(this.player);
+            this.player.body.allowGravity = false;
+            this.player.body.collideWorldBounds = true;
         }
 
         update() {
             this.game.physics.arcade.collide(this.kawaiiGroup);
+
+            this.player.body.velocity.x = 0;
+
+            if (this.game.input.position.x < this.game.world.centerX) {
+                this.player.body.velocity.x = -100;
+            } else if (this.game.input.position.x > this.game.world.centerX) {
+                this.player.body.velocity.x = 100;
+            }
         }
     }
 
