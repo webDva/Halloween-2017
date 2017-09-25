@@ -113,18 +113,18 @@ module GameModuleName {
 
         create() {
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
-            this.game.physics.arcade.gravity.y = 400;
+            this.game.physics.arcade.gravity.x = -400;
 
             this.kawaiiGroup = this.game.add.group();
 
             let spawnTimer = this.game.time.create(false);
             spawnTimer.loop(800, () => {
-                let singleKawaii = new KawaiiSprite(this.game, this.game.rnd.integerInRange(0, this.game.width - 32), 0, '__default');
+                let singleKawaii = new KawaiiSprite(this.game, this.game.width - 32, this.game.rnd.integerInRange(0, this.game.height - 32), '__default');
                 this.kawaiiGroup.add(singleKawaii);
             }, this);
             spawnTimer.start();
 
-            this.player = this.game.add.sprite(this.game.world.centerX, this.game.height - 150, this.game.cache.getBitmapData('player'));
+            this.player = this.game.add.sprite(100, this.game.world.centerY, this.game.cache.getBitmapData('player'));
             this.game.physics.arcade.enable(this.player);
             this.player.body.allowGravity = false;
             this.player.body.collideWorldBounds = true;
@@ -133,13 +133,13 @@ module GameModuleName {
         update() {
             this.game.physics.arcade.collide(this.kawaiiGroup);
 
-            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
 
             if (this.game.input.activePointer.isDown) {
-                if (this.game.input.position.x < this.game.world.centerX) {
-                    this.player.body.velocity.x = -300;
-                } else if (this.game.input.position.x > this.game.world.centerX) {
-                    this.player.body.velocity.x = 300;
+                if (this.game.input.position.y < this.game.world.centerY) {
+                    this.player.body.velocity.y = -300;
+                } else if (this.game.input.position.y > this.game.world.centerY) {
+                    this.player.body.velocity.y = 300;
                 }
             }
         }
