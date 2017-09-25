@@ -126,7 +126,7 @@ module GameModuleName {
 
             this.player = this.game.add.sprite(100, this.game.world.centerY, this.game.cache.getBitmapData('player'));
             this.game.physics.arcade.enable(this.player);
-            this.player.body.allowGravity = false;
+            this.player.body.gravity = new Phaser.Point(-this.game.physics.arcade.gravity.x, 9000);
             this.player.body.collideWorldBounds = true;
         }
 
