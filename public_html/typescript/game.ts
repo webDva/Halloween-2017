@@ -38,20 +38,11 @@ module GameModuleName {
             // Load assets
 
             // test square graphic
-            let pumpkinSquare = this.game.add.bitmapData(32, 32);
-            let nekoSquare = this.game.add.bitmapData(32, 32);
-            let majoSquare = this.game.add.bitmapData(32, 32);
+            this.game.load.image('majo', 'assets/images/majo.png');
+            this.game.load.image('neko', 'assets/images/neko.png');
+            this.game.load.image('pumpkin', 'assets/images/pumpkin.png');
+
             let playerSquare = this.game.add.bitmapData(100, 100);
-
-            pumpkinSquare.rect(0, 0, 32, 32, "rgb(255, 165, 0)");
-            this.game.cache.addBitmapData("pumpkin", pumpkinSquare);
-
-            nekoSquare.rect(0, 0, 32, 32, 'rgb(0, 0, 0)');
-            this.game.cache.addBitmapData('neko', nekoSquare);
-
-            majoSquare.rect(0, 0, 32, 32, 'rgb(128, 128, 128)');
-            this.game.cache.addBitmapData('majo', majoSquare);
-
             playerSquare.rect(0, 0, 100, 100, 'rgb(255, 192, 203)');
             this.game.cache.addBitmapData('player', playerSquare);
         }
@@ -85,12 +76,12 @@ module GameModuleName {
             this.outOfBoundsKill = true;
 
             let randomType = this.game.rnd.integerInRange(0, 2);
-            if (randomType === 0) {
-                this.loadTexture(this.game.cache.getBitmapData('pumpkin'));
-            } else if (randomType === 1) {
-                this.loadTexture(this.game.cache.getBitmapData('majo'));
-            } else if (randomType === 2) {
-                this.loadTexture(this.game.cache.getBitmapData('neko'));
+            if (randomType === HalloweenArchetype.Pumpkin) {
+                this.loadTexture('pumpkin');
+            } else if (randomType === HalloweenArchetype.Majo) {
+                this.loadTexture('majo');
+            } else if (randomType === HalloweenArchetype.Neko) {
+                this.loadTexture('neko');
             }
 
             // Add to the display, but the physics system already did this, so this is redundant.
@@ -119,7 +110,7 @@ module GameModuleName {
 
             let spawnTimer = this.game.time.create(false);
             spawnTimer.loop(800, () => {
-                let singleKawaii = new KawaiiSprite(this.game, this.game.width - 32, this.game.rnd.integerInRange(0, this.game.height - 32), '__default');
+                let singleKawaii = new KawaiiSprite(this.game, this.game.width - 48, this.game.rnd.integerInRange(0, this.game.height - 32), '__default');
                 this.kawaiiGroup.add(singleKawaii);
             }, this);
             spawnTimer.start();
